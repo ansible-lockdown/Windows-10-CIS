@@ -17,4 +17,4 @@ win10cis_cloud_based_system: false
 
 # default setting, this should not be changed
 # and is overridden if a task that changed sets the value if required.
-change_requires_reboot: false
+reboot_host: false

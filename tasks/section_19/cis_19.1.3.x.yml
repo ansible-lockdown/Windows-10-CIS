@@ -25,6 +25,7 @@
       type: string
   loop: "{{ hku_loaded_list }}"
   notify: change_requires_reboot
+  changed_when: true
   when:
       - win10cis_rule_19_1_3_2
   tags:
