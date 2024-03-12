@@ -25,7 +25,6 @@
       type: string
   loop: "{{ hku_loaded_list }}"
   notify: change_requires_reboot
-  changed_when: true
   when:
       - win10cis_rule_19_1_3_2
   tags:
@@ -62,10 +61,10 @@
             data: "{{ win10cis_screen_saver_timeout }}"
             type: string
         loop: "{{ hku_loaded_list }}"
+        notify: change_requires_reboot
         when:
             - win10cis_screen_saver_timeout > 0
             - win10cis_screen_saver_timeout <= 900
-  notify: change_requires_reboot
   when:
       - win10cis_rule_19_1_3_3
   tags:

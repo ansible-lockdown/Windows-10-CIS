@@ -15,6 +15,6 @@ lockdown_banner: "{{lookup('file', './templates/banner.txt')}}"
 # This will be changed to true if discovered.
 win10cis_cloud_based_system: false
 
-# default setting, this should not be changed
+# Default setting, this should not be changed
 # and is overridden if a task that changed sets the value if required.
 reboot_host: false
