@@ -14,6 +14,7 @@ win10cis_min_ansible_version: "2.10.1"
 
 # win_skip_for_test is the setting that will skip tasks that may cause changes that will affect the system.
 # These controls are primarily around RDP and WinRM
+# Default: false
 # Controls that will be skipped:
 # 2.2.16 - Breaks Local Admin Connection
 # 2.2.20 - Breaks Local Admin Connection
