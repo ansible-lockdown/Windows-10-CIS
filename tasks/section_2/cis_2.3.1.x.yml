@@ -6,26 +6,24 @@
       name: NoConnectedUser
       data: 3
       type: dword
-  when:
-      - win10cis_rule_2_3_1_1
+  when: win10cis_rule_2_3_1_1
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.3.1.1
-      - automated
       - patch
+      - automated
+      - rule_2.3.1.1
 
 - name: "2.3.1.2 | PATCH | Ensure Accounts Guest account status is set to Disabled."
   community.windows.win_security_policy:
       section: System Access
       key: EnableGuestAccount
       value: 0
-  when:
-      - win10cis_rule_2_3_1_2
+  when: win10cis_rule_2_3_1_2
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.3.1.2
-      - automated
       - patch
+      - automated
+      - rule_2.3.1.2
 
 - name: "2.3.1.3 | PATCH | Ensure Accounts Limit local account use of blank passwords to console logon only is set to Enabled."
   ansible.windows.win_regedit:
@@ -33,16 +31,29 @@
       name: LimitBlankPasswordUse
       data: 1
       type: dword
-  when:
-      - win10cis_rule_2_3_1_3
+  when: win10cis_rule_2_3_1_3
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.3.1.3
-      - automated
       - patch
+      - automated
+      - rule_2.3.1.3
 
 - name: "2.3.1.4 | PATCH | Configure Accounts Rename administrator account."
   block:
+      - name: "2.3.1.4 | PATCH | Configure Accounts Rename Administrator account. | Make Changes To Admin Name."
+        community.windows.win_security_policy:
+            section: System Access
+            key: newadministratorname
+            value: "{{ win10cis_admin_username }}"
+        when: "'adminchangethis' not in win10cis_admin_username"
+
+      - name: "2.3.1.4 | PATCH | Configure Accounts Rename Administrator account. | Make Changes To Admin Name."
+        community.windows.win_security_policy:
+            section: System Access
+            key: newadministratorname
+            value: "{{ win10cis_admin_username }}"
+        when: "'adminchangethis' not in win10cis_admin_username"
+
       - name: "2.3.1.4 | AUDIT | Configure Accounts Rename administrator account. | Warning Msg For Default Variable Not Edited."
         ansible.builtin.debug:
             msg:
@@ -56,24 +67,23 @@
         vars:
             warn_control_id: '2.3.1.4'
         when: "'adminchangethis' in win10cis_admin_username"
-
-      - name: "2.3.1.4 | PATCH | Configure Accounts Rename Administrator account. | Make Changes To Admin Name."
-        community.windows.win_security_policy:
-            section: System Access
-            key: newadministratorname
-            value: "{{ win10cis_admin_username }}"
-        when: "'adminchangethis' not in win10cis_admin_username"
-  when:
-      - win10cis_rule_2_3_1_4
+  when: win10cis_rule_2_3_1_4
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.3.1.4
-      - automated
       - patch
+      - automated
+      - rule_2.3.1.4
       - administrator
 
 - name: "2.3.1.5 | PATCH | Configure Accounts Rename guest account."
   block:
+      - name: "2.3.1.5 | PATCH | Configure Accounts Rename guest account. | Make Changes To Guest Name."
+        community.windows.win_security_policy:
+            section: System Access
+            key: NewGuestName
+            value: "{{ win10cis_guest_username }}"
+        when: "'guestchangethis' not in win10cis_guest_username"
+
       - name: "2.3.1.5 | AUDIT | Configure Accounts Rename guest account. | Warning Msg For Default Variable Not Edited."
         ansible.builtin.debug:
             msg:
@@ -87,18 +97,10 @@
         vars:
             warn_control_id: '2.3.1.5'
         when: "'guestchangethis' in win10cis_guest_username"
-
-      - name: "2.3.1.5 | PATCH | Configure Accounts Rename guest account. | Make Changes To Guest Name."
-        community.windows.win_security_policy:
-            section: System Access
-            key: NewGuestName
-            value: "{{ win10cis_guest_username }}"
-        when: "'guestchangethis' not in win10cis_guest_username"
-  when:
-      - win10cis_rule_2_3_1_5
+  when: win10cis_rule_2_3_1_5
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.3.1.5
-      - automated
       - patch
+      - automated
+      - rule_2.3.1.5
       - guest

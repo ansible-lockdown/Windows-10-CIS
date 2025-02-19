@@ -5,21 +5,20 @@
       - name: "5.1 | AUDIT | Ensure 'Bluetooth Audio Gateway Service (BTAGService)' is set to 'Disabled' | Check to see if BTAGService service exists."
         ansible.windows.win_service_info:
             name: BTAGService
-        register: btagservice_service_info
+        register: discovered_5_1_btagservice_service_info
 
       - name: "5.1 | PATCH | Ensure 'Bluetooth Audio Gateway Service (BTAGService)' is set to 'Disabled' | Disable BTAGService service."
         ansible.windows.win_service:
             name: BTAGService
             start_mode: disabled
             state: stopped
-        when: btagservice_service_info.exists
-  when:
-      - win10cis_rule_5_1
+        when: discovered_5_1_btagservice_service_info.exists
+  when: win10cis_rule_5_1
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.1
-      - automated
       - patch
+      - automated
+      - rule_5.1
       - bluetooth
 
 - name: "5.2 | PATCH | Ensure 'Bluetooth Support Service (bthserv) is set to Disabled."
@@ -27,21 +26,20 @@
       - name: "5.2 | AUDIT | Ensure 'Bluetooth Support Service (bthserv) is set to Disabled. | Check to see if bthserv service exists."
         ansible.windows.win_service_info:
             name: bthserv
-        register: bthserv_service_info
+        register: discovered_5_2_bthserv_service_info
 
       - name: "5.2 | PATCH | Ensure 'Bluetooth Support Service (bthserv) is set to Disabled. | Disable bthserv service."
         ansible.windows.win_service:
             name: bthserv
             start_mode: disabled
             state: stopped
-        when: bthserv_service_info.exists
-  when:
-      - win10cis_rule_5_2
+        when: discovered_5_2_bthserv_service_info.exists
+  when: win10cis_rule_5_2
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.2
-      - automated
       - patch
+      - automated
+      - rule_5.2
       - bluetooth
 
 # Setting this control causes warnings with Gather Facts.
@@ -62,7 +60,7 @@
       - name: "5.3 | AUDIT | Ensure 'Computer Browser (Browser)' is set to 'Disabled' or 'Not Installed' | Check to see if Browser service exists."
         ansible.windows.win_service_info:
             name: Browser
-        register: browser_service_info
+        register: discovered_5_3_browser_service_info
 
       - name: "5.3 | PATCH | Ensure 'Computer Browser (Browser)' is set to 'Disabled' or 'Not Installed' | Disable Browser service."
         ansible.windows.win_service:
@@ -70,15 +68,24 @@
             start_mode: disabled
             force_dependent_services: true
             state: stopped
-        when: browser_service_info.exists
-  when:
-      - win10cis_rule_5_3
+        when:
+            - discovered_5_3_browser_service_info.exists
+            - not win10cis_uninstall_computer_browser_service
+
+      - name: "5.3 | PATCH | Ensure 'Computer Browser (Browser)' is set to 'Disabled' or 'Not Installed' | Uninstall Browser service."
+        ansible.windows.win_service:
+            name: Browser
+            force_dependent_services: true
+            state: absent
+        when:
+            - discovered_5_3_browser_service_info.exists
+            - win10cis_uninstall_computer_browser_service
+  when: win10cis_rule_5_3
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.3
-      - automated
       - patch
-      - bowser
+      - automated
+      - rule_5.3
       - browser
 
 - name: "5.4 | PATCH | Ensure 'Downloaded Maps Manager (MapsBroker)' is set to 'Disabled'."
@@ -86,21 +93,20 @@
       - name: "5.4 | AUDIT | Ensure 'Downloaded Maps Manager (MapsBroker)' is set to 'Disabled' | Check to see if MapsBroker service exists."
         ansible.windows.win_service_info:
             name: MapsBroker
-        register: mapsbroker_service_info
+        register: discovered_5_4_mapsbroker_service_info
 
       - name: "5.4 | PATCH | Ensure 'Downloaded Maps Manager (MapsBroker)' is set to 'Disabled' | Disable MapsBroker service."
         ansible.windows.win_service:
             name: MapsBroker
             start_mode: disabled
             state: stopped
-        when: mapsbroker_service_info.exists
-  when:
-      - win10cis_rule_5_4
+        when: discovered_5_4_mapsbroker_service_info.exists
+  when: win10cis_rule_5_4
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.4
-      - automated
       - patch
+      - automated
+      - rule_5.4
       - maps
 
 - name: "5.5 | PATCH | Ensure 'Geolocation Service (lfsvc)' is set to 'Disabled'."
@@ -108,21 +114,20 @@
       - name: "5.5 | AUDIT | Ensure 'Geolocation Service (lfsvc)' is set to 'Disabled'. | Check to see if lfsvc service exists."
         ansible.windows.win_service_info:
             name: lfsvc
-        register: lfsvc_service_info
+        register: discovered_5_5_lfsvc_service_info
 
       - name: "5.5 | PATCH | Ensure 'Geolocation Service (lfsvc)' is set to 'Disabled'. | Disable MapsBroker service."
         ansible.windows.win_service:
             name: lfsvc
             start_mode: disabled
             state: stopped
-        when: lfsvc_service_info.exists
-  when:
-      - win10cis_rule_5_5
+        when: discovered_5_5_lfsvc_service_info.exists
+  when: win10cis_rule_5_5
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.5
-      - automated
       - patch
+      - automated
+      - rule_5.5
       - geolocation
 
 - name: "5.6 | PATCH | Ensure 'IIS Admin Service (IISADMIN)' is set to 'Disabled' or 'Not Installed'."
@@ -130,21 +135,30 @@
       - name: "5.6 | AUDIT | Ensure 'IIS Admin Service (IISADMIN)' is set to 'Disabled' or 'Not Installed' | Check to see if IISADMIN service exists."
         ansible.windows.win_service_info:
             name: iisadmin
-        register: iisadmin_service_info
+        register: discovered_5_6_iisadmin_service_info
 
       - name: "5.6 | PATCH | Ensure 'IIS Admin Service (IISADMIN)' is set to 'Disabled' or 'Not Installed' | Disable IISADMIN service."
         ansible.windows.win_service:
             name: iisadmin
             start_mode: disabled
             state: stopped
-        when: iisadmin_service_info.exists
-  when:
-      - win10cis_rule_5_6
+        when:
+            - discovered_5_6_iisadmin_service_info.exists
+            - not win10cis_uninstall_iis_service_admin
+
+      - name: "5.6 | PATCH | Ensure 'IIS Admin Service (IISADMIN)' is set to 'Disabled' or 'Not Installed' | Uninstall IISADMIN service."
+        ansible.windows.win_service:
+            name: iisadmin
+            state: absent
+        when:
+            - discovered_5_6_iisadmin_service_info.exists
+            - win10cis_uninstall_iis_service_admin
+  when: win10cis_rule_5_6
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.6
-      - automated
       - patch
+      - automated
+      - rule_5.6
       - iisadmin
 
 - name: "5.7 | PATCH | Ensure 'Infrared monitor service (irmon)' is set to 'Disabled' or 'Not Installed'."
@@ -152,21 +166,30 @@
       - name: "5.7 | AUDIT | Ensure 'Infrared monitor service (irmon)' is set to 'Disabled' or 'Not Installed' | Check to see if irmon service exists."
         ansible.windows.win_service_info:
             name: irmon
-        register: irmon_service_info
+        register: discovered_5_7_irmon_service_info
 
       - name: "5.7 | PATCH | Ensure 'Infrared monitor service (irmon)' is set to 'Disabled' or 'Not Installed' | Disable irmon service."
         ansible.windows.win_service:
             name: irmon
             start_mode: disabled
             state: stopped
-        when: irmon_service_info.exists
-  when:
-      - win10cis_rule_5_7
+        when:
+            - discovered_5_7_irmon_service_info.exists
+            - not win10cis_uninstall_irmon_service
+
+      - name: "5.7 | PATCH | Ensure 'Infrared monitor service (irmon)' is set to 'Disabled' or 'Not Installed' | Uninstall irmon service."
+        ansible.windows.win_service:
+            name: irmon
+            state: absent
+        when:
+            - discovered_5_7_irmon_service_info.exists
+            - win10cis_uninstall_irmon_service
+  when: win10cis_rule_5_7
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.7
-      - automated
       - patch
+      - automated
+      - rule_5.7
       - irmon
 
 - name: "5.8 | PATCH | Ensure 'Internet Connection Sharing (ICS) (SharedAccess)' is set to 'Disabled'."
@@ -174,21 +197,20 @@
       - name: "5.8 | AUDIT | Ensure 'Internet Connection Sharing (ICS) (SharedAccess)' is set to 'Disabled' | Check to see if irmon service exists."
         ansible.windows.win_service_info:
             name: SharedAccess
-        register: sharedaccess_service_info
+        register: discovered_5_8_sharedaccess_service_info
 
       - name: "5.8 | PATCH | Ensure 'Internet Connection Sharing (ICS) (SharedAccess)' is set to 'Disabled' | Disable SharedAccess service."
         ansible.windows.win_service:
             name: SharedAccess
             start_mode: disabled
             state: stopped
-        when: sharedaccess_service_info.exists
-  when:
-      - win10cis_rule_5_8
+        when: discovered_5_8_sharedaccess_service_info.exists
+  when: win10cis_rule_5_8
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.8
-      - automated
       - patch
+      - automated
+      - rule_5.8
       - ics
 
 - name: "5.9 | PATCH | Ensure 'Link-Layer Topology Discovery Mapper (lltdsvc)' is set to 'Disabled'."
@@ -196,21 +218,20 @@
       - name: "5.9 | AUDIT | Ensure 'Link-Layer Topology Discovery Mapper (lltdsvc)' is set to 'Disabled' | Check to see if lltdsvc service exists."
         ansible.windows.win_service_info:
             name: lltdsvc
-        register: lltdsvc_service_info
+        register: discovered_5_9_lltdsvc_service_info
 
       - name: "5.9 | PATCH | Ensure 'Link-Layer Topology Discovery Mapper (lltdsvc)' is set to 'Disabled' | Disable lltdsvc service."
         ansible.windows.win_service:
             name: lltdsvc
             start_mode: disabled
             state: stopped
-        when: lltdsvc_service_info.exists
-  when:
-      - win10cis_rule_5_9
+        when: discovered_5_9_lltdsvc_service_info.exists
+  when: win10cis_rule_5_9
   tags:
-      - level1-corporate-enterprise-environment
-      - rule_5.9
-      - automated
+      - level2-corporate-enterprise-environment
       - patch
+      - automated
+      - rule_5.9
       - lltdsvc
 
 - name: "5.10 | PATCH | Ensure 'LxssManager (LxssManager)' is set to 'Disabled' or 'Not Installed'."
@@ -218,21 +239,30 @@
       - name: "5.10 | AUDIT | Ensure 'LxssManager (LxssManager)' is set to 'Disabled' or 'Not Installed' | Check to see if LxssManager service exists."
         ansible.windows.win_service_info:
             name: LxssManager
-        register: lxssmanager_service_info
+        register: discovered_5_10_lxssmanager_service_info
 
-      - name: "5.10 | PATCH | Ensure 'LxssManager (LxssManager)' is set to 'Disabled' or 'Not Installed' | Disable lltdsvc service."
+      - name: "5.10 | PATCH | Ensure 'LxssManager (LxssManager)' is set to 'Disabled' or 'Not Installed' | Disable LxssManager service."
         ansible.windows.win_service:
             name: LxssManager
             start_mode: disabled
             state: stopped
-        when: lxssmanager_service_info.exists
-  when:
-      - win10cis_rule_5_10
+        when:
+            - discovered_5_10_lxssmanager_service_info.exists
+            - not win10cis_uninstall_lxssmanager_service
+
+      - name: "5.10 | PATCH | Ensure 'LxssManager (LxssManager)' is set to 'Disabled' or 'Not Installed' | Disable LxssManager service."
+        ansible.windows.win_service:
+            name: LxssManager
+            state: absent
+        when:
+            - discovered_5_10_lxssmanager_service_info.exists
+            - win10cis_uninstall_lxssmanager_service
+  when: win10cis_rule_5_10
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.10
-      - automated
       - patch
+      - automated
+      - rule_5.10
       - lxssmanager
 
 - name: "5.11 | PATCH | Ensure 'Microsoft FTP Service (FTPSVC)' is set to 'Disabled' or 'Not Installed'."
@@ -240,21 +270,31 @@
       - name: "5.11 | AUDIT | Ensure 'Microsoft FTP Service (FTPSVC)' is set to 'Disabled' or 'Not Installed' | Check to see if FTPSVC service exists."
         ansible.windows.win_service_info:
             name: FTPSVC
-        register: ftpsvc_service_info
+        register: discovered_5_11_ftpsvc_service_info
 
       - name: "5.11 | PATCH | Ensure 'Microsoft FTP Service (FTPSVC)' is set to 'Disabled' or 'Not Installed' | Disable FTPSVC service."
         ansible.windows.win_service:
             name: FTPSVC
             start_mode: disabled
             state: stopped
-        when: ftpsvc_service_info.exists
-  when:
-      - win10cis_rule_5_11
+        when:
+            - discovered_5_11_ftpsvc_service_info.exists
+            - not win10cis_uninstall_ftpsvc_service
+
+      - name: "5.11 | PATCH | Ensure 'Microsoft FTP Service (FTPSVC)' is set to 'Disabled' or 'Not Installed' | Uninstall FTPSVC service."
+        ansible.windows.win_service:
+            name: FTPSVC
+            start_mode: disabled
+            state: stopped
+        when:
+            - discovered_5_11_ftpsvc_service_info.exists
+            - win10cis_uninstall_ftpsvc_service
+  when: win10cis_rule_5_11
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.11
-      - automated
       - patch
+      - automated
+      - rule_5.11
       - ftpsvc
 
 - name: "5.12 | PATCH | Ensure 'Microsoft iSCSI Initiator Service (MSiSCSI)' is set to 'Disabled' (Automated)."
@@ -262,21 +302,30 @@
       - name: "5.12 | AUDIT | Ensure 'Microsoft iSCSI Initiator Service (MSiSCSI)' is set to 'Disabled' (Automated).| Check to see if MSiSCSI service exists."
         ansible.windows.win_service_info:
             name: MSiSCSI
-        register: msiscsi_service_info
+        register: discovered_5_12_msiscsi_service_info
 
       - name: "5.12 | PATCH | Ensure 'Microsoft iSCSI Initiator Service (MSiSCSI)' is set to 'Disabled' (Automated). | Disable MSiSCSI service."
         ansible.windows.win_service:
             name: MSiSCSI
             start_mode: disabled
             state: stopped
-        when: msiscsi_service_info.exists
-  when:
-      - win10cis_rule_5_12
+        when:
+            - discovered_5_12_msiscsi_service_info.exists
+            - not win10cis_uninstall_msiscsi_service
+
+      - name: "5.12 | PATCH | Ensure 'Microsoft iSCSI Initiator Service (MSiSCSI)' is set to 'Disabled' (Automated). | Uninstall MSiSCSI service."
+        ansible.windows.win_service:
+            name: MSiSCSI
+            state: absent
+        when:
+            - discovered_5_12_msiscsi_service_info.exists
+            - win10cis_uninstall_msiscsi_service
+  when: win10cis_rule_5_12
   tags:
-      - level1-corporate-enterprise-environment
-      - rule_5.12
-      - automated
+      - level2-high-security-sensitive-data-environment
       - patch
+      - automated
+      - rule_5.12
       - msiscsi
 
 - name: "5.13 | PATCH | Ensure 'OpenSSH SSH Server (sshd)' is set to 'Disabled' or 'Not Installed'."
@@ -284,21 +333,30 @@
       - name: "5.13 | AUDIT | Ensure 'OpenSSH SSH Server (sshd)' is set to 'Disabled' or 'Not Installed' | Check to see if sshd service exists."
         ansible.windows.win_service_info:
             name: sshd
-        register: sshd_service_info
+        register: discovered_5_13_sshd_service_info
 
       - name: "5.13 | PATCH | Ensure 'OpenSSH SSH Server (sshd)' is set to 'Disabled' or 'Not Installed' | Disable sshd service."
         ansible.windows.win_service:
             name: sshd
             start_mode: disabled
             state: stopped
-        when: sshd_service_info.exists
-  when:
-      - win10cis_rule_5_13
+        when:
+            - discovered_5_13_sshd_service_info.exists
+            - not win10cis_uninstall_sshd_service
+
+      - name: "5.13 | PATCH | Ensure 'OpenSSH SSH Server (sshd)' is set to 'Disabled' or 'Not Installed' | Disable sshd service."
+        ansible.windows.win_service:
+            name: sshd
+            state: absent
+        when:
+            - discovered_5_13_sshd_service_info.exists
+            - win10cis_uninstall_sshd_service
+  when: win10cis_rule_5_13
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.13
-      - automated
       - patch
+      - automated
+      - rule_5.13
       - sshd
 
 - name: "5.14 | PATCH | Ensure 'Peer Name Resolution Protocol (PNRPsvc)' is set to 'Disabled' (Automated)."
@@ -306,21 +364,20 @@
       - name: "5.14 | AUDIT | Ensure 'Peer Name Resolution Protocol (PNRPsvc)' is set to 'Disabled' (Automated) | Check to see if pnrpsvc service exists."
         ansible.windows.win_service_info:
             name: PNRPsvc
-        register: pnrpsvc_service_info
+        register: discovered_5_14_pnrpsvc_service_info
 
       - name: "5.14 | PATCH | Ensure 'Peer Name Resolution Protocol (PNRPsvc)' is set to 'Disabled' (Automated) | Disable pnrpsvc service."
         ansible.windows.win_service:
             name: PNRPsvc
             start_mode: disabled
             state: stopped
-        when: pnrpsvc_service_info.exists
-  when:
-      - win10cis_rule_5_14
+        when: discovered_5_14_pnrpsvc_service_info.exists
+  when: win10cis_rule_5_14
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.14
-      - automated
       - patch
+      - automated
+      - rule_5.14
       - pnrpsvc
 
 - name: "5.15 | PATCH | Ensure 'Peer Networking Grouping (p2psvc)' is set to 'Disabled'."
@@ -328,21 +385,20 @@
       - name: "5.15 | AUDIT | Ensure 'Peer Networking Grouping (p2psvc)' is set to 'Disabled' | Check to see if p2psvc service exists."
         ansible.windows.win_service_info:
             name: p2psvc
-        register: p2psvc_service_info
+        register: discovered_5_15_p2psvc_service_info
 
       - name: "5.15 | PATCH | Ensure 'Peer Networking Grouping (p2psvc)' is set to 'Disabled' | Disable p2psvc service."
         ansible.windows.win_service:
             name: p2psvc
             start_mode: disabled
             state: stopped
-        when: p2psvc_service_info.exists
-  when:
-      - win10cis_rule_5_15
+        when: discovered_5_15_p2psvc_service_info.exists
+  when: win10cis_rule_5_15
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.15
-      - automated
       - patch
+      - automated
+      - rule_5.15
       - p2psvc
 
 - name: "5.16 | PATCH | Ensure 'Peer Networking Identity Manager (p2pimsvc)' is set to 'Disabled'."
@@ -350,21 +406,20 @@
       - name: "5.16 | AUDIT | Ensure 'Peer Networking Identity Manager (p2pimsvc)' is set to 'Disabled | Check to see if p2pimsvc service exists."
         ansible.windows.win_service_info:
             name: p2pimsvc
-        register: p2pimsvc_service_info
+        register: discovered_5_16_p2pimsvc_service_info
 
       - name: "5.16 | PATCH | Ensure 'Peer Networking Identity Manager (p2pimsvc)' is set to 'Disabled | Disable p2pimsvc service."
         ansible.windows.win_service:
             name: p2pimsvc
             start_mode: disabled
             state: stopped
-        when: p2pimsvc_service_info.exists
-  when:
-      - win10cis_rule_5_16
+        when: discovered_5_16_p2pimsvc_service_info.exists
+  when: win10cis_rule_5_16
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.16
-      - automated
       - patch
+      - automated
+      - rule_5.16
       - p2pimsvc
 
 - name: "5.17 | PATCH | Ensure 'PNRP Machine Name Publication Service (PNRPAutoReg)' is set to 'Disabled'."
@@ -372,21 +427,20 @@
       - name: "5.17 | AUDIT | Ensure 'PNRP Machine Name Publication Service (PNRPAutoReg)' is set to 'Disabled' \ Check to see if PNRPAutoReg service exists."
         ansible.windows.win_service_info:
             name: PNRPAutoReg
-        register: pnrpautoreg_service_info
+        register: discovered_5_17_pnrpautoreg_service_info
 
       - name: "5.17 | PATCH | Ensure 'PNRP Machine Name Publication Service (PNRPAutoReg)' is set to 'Disabled' | Disable PNRPAutoReg service."
         ansible.windows.win_service:
             name: PNRPAutoReg
             start_mode: disabled
             state: stopped
-        when: pnrpautoreg_service_info.exists
-  when:
-      - win10cis_rule_5_17
+        when: discovered_5_17_pnrpautoreg_service_info.exists
+  when: win10cis_rule_5_17
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.17
-      - automated
       - patch
+      - automated
+      - rule_5.17
       - pnrpautoreg
 
 - name: "5.18 | PATCH | Ensure 'Print Spooler (Spooler)' is set to 'Disabled'."
@@ -394,21 +448,20 @@
       - name: "5.18 | AUDIT | Ensure 'Print Spooler (Spooler)' is set to 'Disabled' | Check to see if PNRPAutoReg service exists."
         ansible.windows.win_service_info:
             name: Spooler
-        register: spooler_service_info
+        register: discovered_5_18_spooler_service_info
 
       - name: "5.18 | PATCH | Ensure 'Print Spooler (Spooler)' is set to 'Disabled' | Disable Spooler service."
         ansible.windows.win_service:
             name: Spooler
             start_mode: disabled
             state: stopped
-        when: spooler_service_info.exists
-  when:
-      - win10cis_rule_5_18
+        when: discovered_5_18_spooler_service_info.exists
+  when: win10cis_rule_5_18
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.18
-      - automated
       - patch
+      - automated
+      - rule_5.18
       - spooler
 
 - name: "5.19 | PATCH | Ensure 'Problem Reports and Solutions Control Panel Support (wercplsupport)' is set to 'Disabled'."
@@ -416,21 +469,20 @@
       - name: "5.19 | AUDIT | Ensure 'Problem Reports and Solutions Control Panel Support (wercplsupport)' is set to 'Disabled' | Check to see if wercplsupport service exists."
         ansible.windows.win_service_info:
             name: wercplsupport
-        register: wercplsupport_service_info
+        register: discovered_5_19_wercplsupport_service_info
 
       - name: "5.19 | PATCH | Ensure 'Problem Reports and Solutions Control Panel Support (wercplsupport)' is set to 'Disabled' | Disable wercplsupport service."
         ansible.windows.win_service:
             name: wercplsupport
             start_mode: disabled
             state: stopped
-        when: wercplsupport_service_info.exists
-  when:
-      - win10cis_rule_5_19
+        when: discovered_5_19_wercplsupport_service_info.exists
+  when: win10cis_rule_5_19
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.19
-      - automated
       - patch
+      - automated
+      - rule_5.19
       - wercplsupport
 
 - name: "5.20 | PATCH | Ensure 'Remote Access Auto Connection Manager (RasAuto)' is set to 'Disabled'."
@@ -438,21 +490,20 @@
       - name: "5.20 | AUDIT | Ensure 'Remote Access Auto Connection Manager (RasAuto)' is set to 'Disabled' | Check to see if RasAuto service exists."
         ansible.windows.win_service_info:
             name: RasAuto
-        register: rasauto_service_info
+        register: discovered_5_20_rasauto_service_info
 
       - name: "5.20 | PATCH | Ensure 'Remote Access Auto Connection Manager (RasAuto)' is set to 'Disabled' | Disable RasAuto service."
         ansible.windows.win_service:
             name: RasAuto
             start_mode: disabled
             state: stopped
-        when: rasauto_service_info.exists
-  when:
-      - win10cis_rule_5_20
+        when: discovered_5_20_rasauto_service_info.exists
+  when: win10cis_rule_5_20
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.20
-      - automated
       - patch
+      - automated
+      - rule_5.20
       - rasauto
 
 - name: "5.21 | PATCH | Ensure 'Remote Desktop Configuration (SessionEnv)' is set to 'Disabled'."
@@ -460,21 +511,20 @@
       - name: "5.21 | AUDIT | Ensure 'Remote Desktop Configuration (SessionEnv)' is set to 'Disabled' | Check to see if SessionEnv service exists."
         ansible.windows.win_service_info:
             name: SessionEnv
-        register: sessionenv_service_info
+        register: discovered_5_21_sessionenv_service_info
 
       - name: "5.21 | PATCH | Ensure 'Remote Desktop Configuration (SessionEnv)' is set to 'Disabled' | Disable SessionEnv service."
         ansible.windows.win_service:
             name: SessionEnv
             start_mode: disabled
             state: stopped
-        when: sessionenv_service_info.exists
-  when:
-      - win10cis_rule_5_21
+        when: discovered_5_21_sessionenv_service_info.exists
+  when: win10cis_rule_5_21
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.21
-      - automated
       - patch
+      - automated
+      - rule_5.21
       - sessionenv
 
 - name: "5.22 | PATCH | Ensure 'Remote Desktop Services (TermService)' is set to 'Disabled'."
@@ -482,7 +532,7 @@
       - name: "5.22 | AUDIT | Ensure 'Remote Desktop Services (TermService)' is set to 'Disabled' | Check to see if TermService service exists."
         ansible.windows.win_service_info:
             name: TermService
-        register: termservice_service_info
+        register: discovered_5_22_termservice_service_info
 
       - name: "5.22 | PATCH | Ensure 'Remote Desktop Services (TermService)' is set to 'Disabled' | Disable TermService service."
         ansible.windows.win_service:
@@ -490,15 +540,15 @@
             start_mode: disabled
             force_dependent_services: true
             state: stopped
-        when: termservice_service_info.exists
+        when: discovered_5_22_termservice_service_info.exists
   when:
       - win10cis_rule_5_22
       - not win_skip_for_test
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.22
-      - automated
       - patch
+      - automated
+      - rule_5.22
       - termservice
 
 - name: "5.23 | PATCH | Ensure 'Remote Desktop Services UserMode Port Redirector (UmRdpService)' is set to 'Disabled'."
@@ -506,21 +556,20 @@
       - name: "5.23 | AUDIT | Ensure 'Remote Desktop Services UserMode Port Redirector (UmRdpService)' is set to 'Disabled' | Check to see if UmRdpService service exists."
         ansible.windows.win_service_info:
             name: UmRdpService
-        register: umrdpservice_service_info
+        register: discovered_5_23_umrdpservice_service_info
 
       - name: "5.23 | PATCH | Ensure 'Remote Desktop Services UserMode Port Redirector (UmRdpService)' is set to 'Disabled' | Disable UmRdpService service."
         ansible.windows.win_service:
             name: UmRdpService
             start_mode: disabled
             state: stopped
-        when: umrdpservice_service_info.exists
-  when:
-      - win10cis_rule_5_23
+        when: discovered_5_23_umrdpservice_service_info.exists
+  when: win10cis_rule_5_23
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.23
-      - automated
       - patch
+      - automated
+      - rule_5.23
       - umrdpservice
 
 - name: "5.24 | PATCH | Ensure 'Remote Procedure Call (RPC) Locator (RpcLocator)' is set to 'Disabled'."
@@ -528,21 +577,20 @@
       - name: "5.24 | AUDIT | Ensure 'Remote Procedure Call (RPC) Locator (RpcLocator)' is set to 'Disabled' | Check to see if RpcLocator service exists."
         ansible.windows.win_service_info:
             name: RpcLocator
-        register: rpclocator_service_info
+        register: discovered_5_24_rpclocator_service_info
 
       - name: "5.24 | PATCH | Ensure 'Remote Procedure Call (RPC) Locator (RpcLocator)' is set to 'Disabled' | Disable RpcLocator service."
         ansible.windows.win_service:
             name: RpcLocator
             start_mode: disabled
             state: stopped
-        when: rpclocator_service_info.exists
-  when:
-      - win10cis_rule_5_24
+        when: discovered_5_24_rpclocator_service_info.exists
+  when: win10cis_rule_5_24
   tags:
-      - level2-high-security-sensitive-data-environment
-      - rule_5.24
-      - automated
+      - level1-corporate-enterprise-environment
       - patch
+      - automated
+      - rule_5.24
       - rpclocator
 
 - name: "5.25 | PATCH | Ensure 'Remote Registry (RemoteRegistry)' is set to 'Disabled'."
@@ -550,21 +598,20 @@
       - name: "5.25 | AUDIT | Ensure 'Remote Registry (RemoteRegistry)' is set to 'Disabled' | Check to see if RemoteRegistry service exists."
         ansible.windows.win_service_info:
             name: RemoteRegistry
-        register: remoteregistry_service_info
+        register: discovered_5_25_remoteregistry_service_info
 
       - name: "5.25 | PATCH | Ensure 'Remote Registry (RemoteRegistry)' is set to 'Disabled' | Disable RemoteRegistry service."
         ansible.windows.win_service:
             name: RemoteRegistry
             start_mode: disabled
             state: stopped
-        when: remoteregistry_service_info.exists
-  when:
-      - win10cis_rule_5_25
+        when: discovered_5_25_remoteregistry_service_info.exists
+  when: win10cis_rule_5_25
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.25
-      - automated
       - patch
+      - automated
+      - rule_5.25
       - remoteregistry
 
 - name: "5.26 | PATCH | Ensure 'Routing and Remote Access (RemoteAccess)' is set to 'Disabled'."
@@ -572,21 +619,20 @@
       - name: "5.26 | AUDIT | Ensure 'Routing and Remote Access (RemoteAccess)' is set to 'Disabled' | Check to see if RemoteAccess service exists."
         ansible.windows.win_service_info:
             name: RemoteAccess
-        register: remoteaccess_service_info
+        register: discovered_5_26_remoteaccess_service_info
 
       - name: "5.26 | PATCH | Ensure 'Routing and Remote Access (RemoteAccess)' is set to 'Disabled' | Disable RemoteAccess service."
         ansible.windows.win_service:
             name: RemoteAccess
             start_mode: disabled
             state: stopped
-        when: remoteaccess_service_info.exists
-  when:
-      - win10cis_rule_5_26
+        when: discovered_5_26_remoteaccess_service_info.exists
+  when: win10cis_rule_5_26
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.26
-      - automated
       - patch
+      - automated
+      - rule_5.26
       - remoteaccess
 
 # Setting this control to run causes warnings with Gather Facts.
@@ -597,21 +643,20 @@
       - name: "5.27 | AUDIT | Ensure 'Server (LanmanServer)' is set to 'Disabled' | Check to see if LanmanServer service exists."
         ansible.windows.win_service_info:
             name: LanmanServer
-        register: lanmanserver_service_info
+        register: discovered_5_27_lanmanserver_service_info
 
       - name: "5.27 | PATCH | Ensure 'Server (LanmanServer)' is set to 'Disabled' | Disable LanmanServer service."
         ansible.windows.win_service:
             name: LanmanServer
             start_mode: disabled
             state: stopped
-        when: lanmanserver_service_info.exists
-  when:
-      - win10cis_rule_5_27
+        when: discovered_5_27_lanmanserver_service_info.exists
+  when: win10cis_rule_5_27
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.27
-      - automated
       - patch
+      - automated
+      - rule_5.27
       - lanmanserver
 
 - name: "5.28 | PATCH | Ensure 'Simple TCP/IP Services (simptcp)' is set to 'Disabled' or 'Not Installed'."
@@ -619,21 +664,30 @@
       - name: "5.28 | AUDIT | Ensure 'Simple TCP/IP Services (simptcp)' is set to 'Disabled' or 'Not Installed' | Check to see if simptcp service exists."
         ansible.windows.win_service_info:
             name: simptcp
-        register: simptcp_service_info
+        register: discovered_5_28_simptcp_service_info
 
       - name: "5.28 | PATCH | Ensure 'Simple TCP/IP Services (simptcp)' is set to 'Disabled' or 'Not Installed' | Disable simptcp service."
         ansible.windows.win_service:
             name: simptcp
             start_mode: disabled
             state: stopped
-        when: simptcp_service_info.exists
-  when:
-      - win10cis_rule_5_28
+        when:
+            - discovered_5_28_simptcp_service_info.exists
+            - not win10cis_uninstall_simptcp_service
+
+      - name: "5.28 | PATCH | Ensure 'Simple TCP/IP Services (simptcp)' is set to 'Disabled' or 'Not Installed' | Uninstall simptcp service."
+        ansible.windows.win_service:
+            name: simptcp
+            state: absent
+        when:
+            - discovered_5_28_simptcp_service_info.exists
+            - win10cis_uninstall_simptcp_service
+  when: win10cis_rule_5_28
   tags:
-      - level2-high-security-sensitive-data-environment
-      - rule_5.28
-      - automated
+      - level1-corporate-enterprise-environment
       - patch
+      - automated
+      - rule_5.28
       - simptcp
 
 - name: "5.29 | PATCH | Ensure 'SNMP Service (SNMP)' is set to 'Disabled' or 'Not Installed'."
@@ -641,21 +695,30 @@
       - name: "5.29 | AUDIT | Ensure 'SNMP Service (SNMP)' is set to 'Disabled' or 'Not Installed' | Check to see if SNMP service exists."
         ansible.windows.win_service_info:
             name: SNMP
-        register: snmp_service_info
+        register: discovered_5_29_snmp_service_info
 
       - name: "5.29 | PATCH | Ensure 'SNMP Service (SNMP)' is set to 'Disabled' or 'Not Installed' | Disable SNMP service."
         ansible.windows.win_service:
             name: SNMP
             start_mode: disabled
             state: stopped
-        when: snmp_service_info.exists
-  when:
-      - win10cis_rule_5_29
+        when:
+            - discovered_5_29_snmp_service_info.exists
+            - not win10cis_uninstall_snmp_service
+
+      - name: "5.29 | PATCH | Ensure 'SNMP Service (SNMP)' is set to 'Disabled' or 'Not Installed' | Uninstall SNMP service."
+        ansible.windows.win_service:
+            name: SNMP
+            state: absent
+        when:
+            - discovered_5_29_snmp_service_info.exists
+            - win10cis_uninstall_snmp_service
+  when: win10cis_rule_5_29
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.29
-      - automated
       - patch
+      - automated
+      - rule_5.29
       - snmp
 
 - name: "5.30 | PATCH | Ensure 'Special Administration Console Helper (sacsvr)' is set to 'Disabled' or 'Not Installed'."
@@ -663,21 +726,30 @@
       - name: "5.30 | AUDIT | Ensure 'Special Administration Console Helper (sacsvr)' is set to 'Disabled' or 'Not Installed' | Check to see if sacsvr service exists."
         ansible.windows.win_service_info:
             name: sacsvr
-        register: sacsvr_service_info
+        register: discovered_5_30_sacsvr_service_info
 
       - name: "5.30 | PATCH | Ensure 'Special Administration Console Helper (sacsvr)' is set to 'Disabled' or 'Not Installed' | Disable sacsvr service."
         ansible.windows.win_service:
             name: sacsvr
             start_mode: disabled
             state: stopped
-        when: sacsvr_service_info.exists
-  when:
-      - win10cis_rule_5_30
+        when:
+            - discovered_5_30_sacsvr_service_info.exists
+            - not win10cis_uninstall_sacsvr_service
+
+      - name: "5.30 | PATCH | Ensure 'Special Administration Console Helper (sacsvr)' is set to 'Disabled' or 'Not Installed' | Uninstall sacsvr service."
+        ansible.windows.win_service:
+            name: sacsvr
+            state: absent
+        when:
+            - discovered_5_30_sacsvr_service_info.exists
+            - win10cis_uninstall_sacsvr_service
+  when: win10cis_rule_5_30
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.30
-      - automated
       - patch
+      - automated
+      - rule_5.30
       - sacsvr
 
 - name: "5.31 | PATCH | Ensure 'SSDP Discovery (SSDPSRV)' is set to 'Disabled'."
@@ -685,21 +757,20 @@
       - name: "5.31 | AUDIT | Ensure 'SSDP Discovery (SSDPSRV)' is set to 'Disabled' | Check to see if SSDPSRV service exists."
         ansible.windows.win_service_info:
             name: SSDPSRV
-        register: ssdpsrv_service_info
+        register: discovered_5_31_ssdpsrv_service_info
 
       - name: "5.31 | PATCH | Ensure 'SSDP Discovery (SSDPSRV)' is set to 'Disabled' | Disable SSDPSRV service."
         ansible.windows.win_service:
             name: SSDPSRV
             start_mode: disabled
             state: stopped
-        when: ssdpsrv_service_info.exists
-  when:
-      - win10cis_rule_5_31
+        when: discovered_5_31_ssdpsrv_service_info.exists
+  when: win10cis_rule_5_31
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.31
-      - automated
       - patch
+      - automated
+      - rule_5.31
       - ssdpsrv
 
 - name: "5.32 | PATCH | Ensure 'UPnP Device Host (upnphost)' is set to 'Disabled'."
@@ -707,21 +778,20 @@
       - name: "5.32 | AUDIT | Ensure 'UPnP Device Host (upnphost)' is set to 'Disabled'. | Check to see if upnphost service exists."
         ansible.windows.win_service_info:
             name: upnphost
-        register: upnphost_service_info
+        register: discovered_5_32_upnphost_service_info
 
       - name: "5.32 | PATCH | Ensure 'UPnP Device Host (upnphost)' is set to 'Disabled'. | Disable upnphost service."
         ansible.windows.win_service:
             name: upnphost
             start_mode: disabled
             state: stopped
-        when: upnphost_service_info.exists
-  when:
-      - win10cis_rule_5_32
+        when: discovered_5_32_upnphost_service_info.exists
+  when: win10cis_rule_5_32
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.32
-      - automated
       - patch
+      - automated
+      - rule_5.32
       - upnphost
 
 - name: "5.33 | PATCH | Ensure 'Web Management Service (WMSvc)' is set to 'Disabled' or 'Not Installed'."
@@ -729,21 +799,30 @@
       - name: "5.33 | AUDIT | Ensure 'Web Management Service (WMSvc)' is set to 'Disabled' or 'Not Installed' | Check to see if WMSvc service exists."
         ansible.windows.win_service_info:
             name: WMSvc
-        register: wmsvc_service_info
+        register: discovered_5_33_wmsvc_service_info
 
       - name: "5.33 | PATCH | Ensure 'Web Management Service (WMSvc)' is set to 'Disabled' or 'Not Installed' | Disable WMSvc service."
         ansible.windows.win_service:
             name: WMSvc
             start_mode: disabled
             state: stopped
-        when: wmsvc_service_info.exists
-  when:
-      - win10cis_rule_5_33
+        when:
+            - discovered_5_33_wmsvc_service_info.exists
+            - not win10cis_uninstall_wmsvc_service
+
+      - name: "5.33 | PATCH | Ensure 'Web Management Service (WMSvc)' is set to 'Disabled' or 'Not Installed' | Uninstall WMSvc service."
+        ansible.windows.win_service:
+            name: WMSvc
+            state: absent
+        when:
+            - discovered_5_33_wmsvc_service_info.exists
+            - win10cis_uninstall_wmsvc_service
+  when: win10cis_rule_5_33
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.33
-      - automated
       - patch
+      - automated
+      - rule_5.33
       - wmsvc
 
 - name: "5.34 | PATCH | Ensure 'Windows Error Reporting Service (WerSvc)' is set to 'Disabled'."
@@ -751,16 +830,15 @@
       - name: "5.34 | AUDIT | Ensure 'Windows Error Reporting Service (WerSvc)' is set to 'Disabled' | Check to see if WerSvc service exists."
         ansible.windows.win_service_info:
             name: WerSvc
-        register: wersvc_service_info
+        register: discovered_5_34_wersvc_service_info
 
       - name: "5.34 | PATCH | Ensure 'Windows Error Reporting Service (WerSvc)' is set to 'Disabled' | Disable WerSvc service."
         ansible.windows.win_service:
             name: WerSvc
             start_mode: disabled
             state: stopped
-        when: wersvc_service_info.exists
-  when:
-      - win10cis_rule_5_34
+        when: discovered_5_34_wersvc_service_info.exists
+  when: win10cis_rule_5_34
   tags:
       - level2-high-security-sensitive-data-environment
       - rule_5.34
@@ -773,21 +851,20 @@
       - name: "5.35 | AUDIT | Ensure 'Windows Event Collector (Wecsvc)' is set to 'Disabled' (Automated). | Check to see if Wecsvc service exists."
         ansible.windows.win_service_info:
             name: Wecsvc
-        register: wecsvc_service_info
+        register: discovered_5_35_wecsvc_service_info
 
       - name: "5.35 | PATCH | Ensure 'Windows Event Collector (Wecsvc)' is set to 'Disabled' (Automated). | Disable Wecsvc service."
         ansible.windows.win_service:
             name: Wecsvc
             start_mode: disabled
             state: stopped
-        when: wecsvc_service_info.exists
-  when:
-      - win10cis_rule_5_35
+        when: discovered_5_35_wecsvc_service_info.exists
+  when: win10cis_rule_5_35
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.35
-      - automated
       - patch
+      - automated
+      - rule_5.35
       - wecsvc
 
 - name: "5.36 | PATCH | Ensure 'Windows Media Player Network Sharing Service (WMPNetworkSvc)' is set to 'Disabled' or 'Not Installed'."
@@ -795,21 +872,30 @@
       - name: "5.36 | AUDIT | Ensure 'Windows Media Player Network Sharing Service (WMPNetworkSvc)' is set to 'Disabled' or 'Not Installed'. | Check to see if WMPNetworkSvc service exists."
         ansible.windows.win_service_info:
             name: WMPNetworkSvc
-        register: wmpnetworksvc_service_info
+        register: discovered_5_36_wmpnetworksvc_service_info
 
       - name: "5.36 | PATCH | Ensure 'Windows Media Player Network Sharing Service (WMPNetworkSvc)' is set to 'Disabled' or 'Not Installed'. | Disable WMPNetworkSvc service."
         ansible.windows.win_service:
             name: WMPNetworkSvc
             start_mode: disabled
             state: stopped
-        when: wmpnetworksvc_service_info.exists
-  when:
-      - win10cis_rule_5_36
+        when:
+            - discovered_5_36_wmpnetworksvc_service_info.exists
+            - not win10cis_uninstall_wmpnetworksvc_service
+
+      - name: "5.36 | PATCH | Ensure 'Windows Media Player Network Sharing Service (WMPNetworkSvc)' is set to 'Disabled' or 'Not Installed'. | Uninsall WMPNetworkSvc service."
+        ansible.windows.win_service:
+            name: WMPNetworkSvc
+            state: absent
+        when:
+            - discovered_5_36_wmpnetworksvc_service_info.exists
+            - win10cis_uninstall_wmpnetworksvc_service
+  when: win10cis_rule_5_36
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.36
-      - automated
       - patch
+      - automated
+      - rule_5.36
       - wmpnetworksvc
 
 - name: "5.37 | PATCH | Ensure 'Windows Mobile Hotspot Service (icssvc)' is set to 'Disabled'."
@@ -817,21 +903,20 @@
       - name: "5.37 | AUDIT | Ensure 'Windows Mobile Hotspot Service (icssvc)' is set to 'Disabled' | Check to see if icssvc service exists."
         ansible.windows.win_service_info:
             name: icssvc
-        register: icssvc_service_info
+        register: discovered_5_37_icssvc_service_info
 
       - name: "5.37 | PATCH | Ensure 'Windows Mobile Hotspot Service (icssvc)' is set to 'Disabled' | Disable icssvc service."
         ansible.windows.win_service:
             name: icssvc
             start_mode: disabled
             state: stopped
-        when: icssvc_service_info.exists
-  when:
-      - win10cis_rule_5_37
+        when: discovered_5_37_icssvc_service_info.exists
+  when: win10cis_rule_5_37
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.37
-      - automated
       - patch
+      - automated
+      - rule_5.37
       - icssvc
 
 - name: "5.38 | PATCH | Ensure 'Windows Push Notifications System Service (WpnService)' is set to 'Disabled'."
@@ -839,22 +924,20 @@
       - name: "5.38 | AUDIT | Ensure 'Windows Push Notifications System Service (WpnService)' is set to 'Disabled' | Check to see if WpnService service exists."
         ansible.windows.win_service_info:
             name: WpnService
-        register: wpnservice_service_info
+        register: discovered_5_38_wpnservice_service_info
 
       - name: "5.38 | PATCH | Ensure 'Windows Push Notifications System Service (WpnService)' is set to 'Disabled' | Disable WpnService service."
         ansible.windows.win_service:
             name: WpnService
             start_mode: disabled
             state: stopped
-        when: wpnservice_service_info.exists
-  when:
-      - win10cis_rule_5_38
+        when: discovered_5_38_wpnservice_service_info.exists
+  when: win10cis_rule_5_38
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.38
-      - automated
       - patch
-      - system-services
+      - automated
+      - rule_5.38
       - wpnservice
 
 - name: "5.39 | PATCH | Ensure 'Windows PushToInstall Service (PushToInstall)' is set to 'Disabled'."
@@ -862,22 +945,20 @@
       - name: "5.39 | AUDIT | Ensure 'Windows PushToInstall Service (PushToInstall)' is set to 'Disabled' | Check to see if PushToInstall service exists."
         ansible.windows.win_service_info:
             name: PushToInstall
-        register: pushtoinstall_service_info
+        register: discovered_5_39_pushtoinstall_service_info
 
       - name: "5.39 | PATCH | Ensure 'Windows PushToInstall Service (PushToInstall)' is set to 'Disabled' | Disable PushToInstall service."
         ansible.windows.win_service:
             name: PushToInstall
             start_mode: disabled
             state: stopped
-        when: pushtoinstall_service_info.exists
-  when:
-      - win10cis_rule_5_39
+        when: discovered_5_39_pushtoinstall_service_info.exists
+  when: win10cis_rule_5_39
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.39
-      - automated
       - patch
-      - system-services
+      - automated
+      - rule_5.39
       - pushtoinstall
 
 - name: "5.40 | PATCH | Ensure 'Windows Remote Management (WS-Management) (WinRM)' is set to 'Disabled'."
@@ -885,23 +966,22 @@
       - name: "5.40 | AUDIT | Ensure 'Windows Remote Management (WS-Management) (WinRM)' is set to 'Disabled' | Check to see if WinRM service exists."
         ansible.windows.win_service_info:
             name: WinRM
-        register: winrm_service_info
+        register: discovered_5_40_winrm_service_info
 
       - name: "5.40 | PATCH | Ensure 'Windows Remote Management (WS-Management) (WinRM)' is set to 'Disabled' | Disable WinRM service."
         ansible.windows.win_service:
             name: WinRM
             start_mode: disabled
             state: stopped
-        when: winrm_service_info.exists
+        when: discovered_5_40_winrm_service_info.exists
   when:
       - win10cis_rule_5_40
       - not win_skip_for_test
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_5.40
-      - automated
       - patch
-      - system-services
+      - automated
+      - rule_5.40
       - winrm
 
 - name: "5.41 | PATCH | Ensure 'World Wide Web Publishing Service (W3SVC)' is set to 'Disabled' or 'Not Installed."
@@ -909,22 +989,30 @@
       - name: "5.41 | AUDIT | Ensure 'World Wide Web Publishing Service (W3SVC)' is set to 'Disabled' or 'Not Installed | Check to see if W3SVC service exists."
         ansible.windows.win_service_info:
             name: W3SVC
-        register: w3svc_service_info
+        register: discovered_5_41_w3svc_service_info
 
       - name: "5.41 | PATCH | Ensure 'World Wide Web Publishing Service (W3SVC)' is set to 'Disabled' or 'Not Installed | Disable W3SVC service."
         ansible.windows.win_service:
             name: W3SVC
             start_mode: disabled
             state: stopped
-        when: w3svc_service_info.exists
-  when:
-      - win10cis_rule_5_41
+        when:
+            - discovered_5_41_w3svc_service_info.exists
+            - not win10cis_uninstall_w3svc_service
+
+      - name: "5.41 | PATCH | Ensure 'World Wide Web Publishing Service (W3SVC)' is set to 'Disabled' or 'Not Installed | Uninstall W3SVC service."
+        ansible.windows.win_service:
+            name: W3SVC
+            state: absent
+        when:
+            - discovered_5_41_w3svc_service_info.exists
+            - win10cis_uninstall_w3svc_service
+  when: win10cis_rule_5_41
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.41
-      - automated
       - patch
-      - system-services
+      - automated
+      - rule_5.41
       - w3svc
 
 - name: "5.42 | PATCH | Ensure 'Xbox Accessory Management Service (XboxGipSvc)' is set to 'Disabled'"
@@ -932,22 +1020,20 @@
       - name: "5.42 | AUDIT | Ensure 'Xbox Accessory Management Service (XboxGipSvc)' is set to 'Disabled' | Check to see if XboxGipSvc service exists."
         ansible.windows.win_service_info:
             name: XboxGipSvc
-        register: xboxgipsvc_service_info
+        register: discovered_5_42_xboxgipsvc_service_info
 
       - name: "5.42 | PATCH | Ensure 'Xbox Accessory Management Service (XboxGipSvc)' is set to 'Disabled' | Disable XboxGipSvc service."
         ansible.windows.win_service:
             name: XboxGipSvc
             start_mode: disabled
             state: stopped
-        when: xboxgipsvc_service_info.exists
-  when:
-      - win10cis_rule_5_42
+        when: discovered_5_42_xboxgipsvc_service_info.exists
+  when: win10cis_rule_5_42
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.42
-      - automated
       - patch
-      - system-services
+      - automated
+      - rule_5.42
       - xboxgipsvc
 
 - name: "5.43 | PATCH | Ensure 'Xbox Live Auth Manager (XblAuthManager)' is set to 'Disabled'"
@@ -955,22 +1041,20 @@
       - name: "5.43 | AUDIT | Ensure 'Xbox Live Auth Manager (XblAuthManager)' is set to 'Disabled' | Check to see if XblAuthManager service exists."
         ansible.windows.win_service_info:
             name: XblAuthManager
-        register: xblauthmanager_service_info
+        register: discovered_5_43_xblauthmanager_service_info
 
       - name: "5.43 | PATCH | Ensure 'Xbox Live Auth Manager (XblAuthManager)' is set to 'Disabled' | Disable XblAuthManager service."
         ansible.windows.win_service:
             name: XblAuthManager
             start_mode: disabled
             state: stopped
-        when: xblauthmanager_service_info.exists
-  when:
-      - win10cis_rule_5_43
+        when: discovered_5_43_xblauthmanager_service_info.exists
+  when: win10cis_rule_5_43
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.43
-      - automated
       - patch
-      - system-services
+      - automated
+      - rule_5.43
       - xblauthmanager
 
 - name: "5.44 | PATCH | Ensure 'Xbox Live Game Save (XblGameSave)' is set to 'Disabled'"
@@ -978,21 +1062,20 @@
       - name: "5.44 | AUDIT | Ensure 'Xbox Live Game Save (XblGameSave)' is set to 'Disabled' | Check to see if XblGameSave service exists."
         ansible.windows.win_service_info:
             name: XblGameSave
-        register: xblgamesave_service_info
+        register: discovered_5_44_xblgamesave_service_info
 
       - name: "5.44 | PATCH | Ensure 'Xbox Live Game Save (XblGameSave)' is set to 'Disabled' | Disable XblGameSave service."
         ansible.windows.win_service:
             name: XblGameSave
             start_mode: disabled
             state: stopped
-        when: xblgamesave_service_info.exists
-  when:
-      - win10cis_rule_5_44
+        when: discovered_5_44_xblgamesave_service_info.exists
+  when: win10cis_rule_5_44
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.44
-      - automated
       - patch
+      - automated
+      - rule_5.44
       - xblgamesave
 
 - name: "5.45 | PATCH | Ensure 'Xbox Live Networking Service (XboxNetApiSvc)' is set to 'Disabled'"
@@ -1000,19 +1083,18 @@
       - name: "5.45 | AUDIT | Ensure 'Xbox Live Networking Service (XboxNetApiSvc)' is set to 'Disabled' | Check to see if XboxNetApiSvc service exists."
         ansible.windows.win_service_info:
             name: XboxNetApiSvc
-        register: xboxnetapisvc_service_info
+        register: discovered_5_45_xboxnetapisvc_service_info
 
       - name: "5.45 | PATCH | Ensure 'Xbox Live Networking Service (XboxNetApiSvc)' is set to 'Disabled' | Disable XboxNetApiSvc service."
         ansible.windows.win_service:
             name: XboxNetApiSvc
             start_mode: disabled
             state: stopped
-        when: xboxnetapisvc_service_info.exists
-  when:
-      - win10cis_rule_5_45
+        when: discovered_5_45_xboxnetapisvc_service_info.exists
+  when: win10cis_rule_5_45
   tags:
       - level1-corporate-enterprise-environment
-      - rule_5.45
-      - automated
       - patch
+      - automated
+      - rule_5.45
       - xboxnetapisvc

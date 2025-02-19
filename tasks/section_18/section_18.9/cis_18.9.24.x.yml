@@ -6,15 +6,14 @@
       name: DeviceEnumerationPolicy
       data: 0
       type: dword
-  when:
-      - win10cis_rule_18_9_24_1
+  when: win10cis_rule_18_9_24_1
   tags:
       - level1-bitlocker
       - level1-bitlocker-next-generation-windows-security
       - level2-bitlocker
       - level2-bitlocker-next-generation-windows-security
       - bitlocker
-      - rule_18.9.24.1
-      - automated
       - patch
-      - kernel-dma-protection
+      - automated
+      - rule_18.9.24.1
+      - kernel_dma_protection

@@ -1,0 +1,24 @@
+---
+
+- name: "18.10.75.2.1 | PATCH | Ensure 'Service Enabled' is set to 'Enabled'"
+  block:
+      - name: "18.10.75.2.1 | PATCH | Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass | EnableSmartScreen"
+        ansible.windows.win_regedit:
+            path: HKLM:\Software\Policies\Microsoft\Windows\System
+            name: EnableSmartScreen
+            data: 1
+            type: dword
+
+      - name: "18.10.75.2.1 | PATCH | Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass | ShellSmartScreenLevel"
+        ansible.windows.win_regedit:
+            path: HKLM:\Software\Policies\Microsoft\Windows\System
+            name: ShellSmartScreenLevel
+            data: Block
+            type: string
+  when: win10cis_rule_18_10_75_2_1
+  tags:
+      - level1-corporate-enterprise-environment
+      - patch
+      - automated
+      - rule_18.10.75.2.1
+      - explorer
