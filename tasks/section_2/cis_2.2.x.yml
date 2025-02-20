@@ -5,13 +5,12 @@
       name: SeTrustedCredManAccessPrivilege
       users: []
       action: set
-  when:
-      - win10cis_rule_2_2_1
+  when: win10cis_rule_2_2_1
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.1
-      - automated
       - patch
+      - automated
+      - rule_2.2.1
 
 - name: "2.2.2 | PATCH | Ensure Access this computer from the network is set to Administrators, Remote Desktop Users."
   ansible.windows.win_user_right:
@@ -20,21 +19,19 @@
           - Administrators
           - Remote Desktop Users
       action: set
-  when:
-      - win10cis_rule_2_2_2
+  when: win10cis_rule_2_2_2
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.2
-      - automated
       - patch
+      - automated
+      - rule_2.2.3
 
 - name: "2.2.3 | PATCH | Ensure Act as part of the operating system is set to No One."
   ansible.windows.win_user_right:
       name: SeTcbPrivilege
       users: []
       action: set
-  when:
-      - win10cis_rule_2_2_3
+  when: win10cis_rule_2_2_3
   tags:
       - level1-corporate-enterprise-environment
       - rule_2.2.3
@@ -49,13 +46,12 @@
           - Local Service
           - Network Service
       action: set
-  when:
-      - win10cis_rule_2_2_4
+  when: win10cis_rule_2_2_4
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.4
-      - automated
       - patch
+      - automated
+      - rule_2.2.4
 
 - name: "2.2.5 | PATCH | Ensure Allow log on locally is set to Administrators, Users."
   ansible.windows.win_user_right:
@@ -64,13 +60,12 @@
           - Administrators
           - Users
       action: set
-  when:
-      - win10cis_rule_2_2_5
+  when: win10cis_rule_2_2_5
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.5
-      - automated
       - patch
+      - automated
+      - rule_2.2.5
 
 - name: "2.2.6 | PATCH | Ensure Allow log on through Remote Desktop Services is set to Administrators, Remote Desktop Users."
   ansible.windows.win_user_right:
@@ -79,13 +74,12 @@
           - Administrators
           - Remote Desktop Users
       action: set
-  when:
-      - win10cis_rule_2_2_6
+  when: win10cis_rule_2_2_6
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.6
-      - automated
       - patch
+      - automated
+      - rule_2.2.6
 
 - name: "2.2.7 | PATCH | Ensure Back up files and directories is set to Administrators."
   ansible.windows.win_user_right:
@@ -93,13 +87,12 @@
       users:
           - Administrators
       action: set
-  when:
-      - win10cis_rule_2_2_7
+  when: win10cis_rule_2_2_7
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.7
-      - automated
       - patch
+      - automated
+      - rule_2.2.7
 
 - name: "2.2.8 | PATCH | Ensure Change the system time is set to Administrators, LOCAL SERVICE."
   ansible.windows.win_user_right:
@@ -108,13 +101,12 @@
           - Administrators
           - Local Service
       action: set
-  when:
-      - win10cis_rule_2_2_8
+  when: win10cis_rule_2_2_8
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.8
-      - automated
       - patch
+      - automated
+      - rule_2.2.8
 
 - name: "2.2.9 | PATCH | Ensure Change the time zone is set to Administrators, LOCAL SERVICE, Users."
   ansible.windows.win_user_right:
@@ -124,13 +116,12 @@
           - Local Service
           - Users
       action: set
-  when:
-      - win10cis_rule_2_2_9
+  when: win10cis_rule_2_2_9
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.9
-      - automated
       - patch
+      - automated
+      - rule_2.2.9
 
 - name: "2.2.10 | PATCH | Ensure Create a pagefile is set to Administrators."
   ansible.windows.win_user_right:
@@ -138,26 +129,24 @@
       users:
           - Administrators
       action: set
-  when:
-      - win10cis_rule_2_2_10
+  when: win10cis_rule_2_2_10
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.10
-      - automated
       - patch
+      - automated
+      - rule_2.2.10
 
 - name: "2.2.11 | PATCH | Ensure Create a token object is set to No One."
   ansible.windows.win_user_right:
       name: SeCreateTokenPrivilege
       users: []
       action: set
-  when:
-      - win10cis_rule_2_2_11
+  when: win10cis_rule_2_2_11
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.11
-      - automated
       - patch
+      - automated
+      - rule_2.2.11
 
 - name: "2.2.12 | PATCH | Ensure Create global objects is set to Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE."
   ansible.windows.win_user_right:
@@ -168,26 +157,24 @@
           - Network Service
           - Service
       action: set
-  when:
-      - win10cis_rule_2_2_12
+  when: win10cis_rule_2_2_12
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.12
-      - automated
       - patch
+      - automated
+      - rule_2.2.12
 
 - name: "2.2.13 | PATCH | Ensure Create permanent shared objects is set to No One."
   ansible.windows.win_user_right:
       name: SeCreatePermanentPrivilege
       users: []
       action: set
-  when:
-      - win10cis_rule_2_2_13
+  when: win10cis_rule_2_2_13
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.13
-      - automated
       - patch
+      - automated
+      - rule_2.2.13
 
 - name: "2.2.14 | PATCH | Configure Create symbolic links is set to Administrators Or Add NT VIRTUAL MACHINE when Hyper-V Installed."
   block:
@@ -197,7 +184,7 @@
             users:
                 - Administrators
             action: set
-        when: "'Enabled' not in win10cis_hyper_v_installed.stdout"
+        when: "'Enabled' not in discovered_hyper_v_installed.stdout"
 
       - name: "2.2.14 | PATCH | Configure Create symbolic links is set to Administrators Or Add NT VIRTUAL MACHINE when Hyper-V Installed. | Hyper-V Installed."
         ansible.windows.win_user_right:
@@ -206,14 +193,13 @@
                 - Administrators
                 - NT VIRTUAL MACHINE\Virtual Machines
             action: set
-        when: "'Enabled' in win10cis_hyper_v_installed.stdout_lines"
-  when:
-      - win10cis_rule_2_2_14
+        when: "'Enabled' in discovered_hyper_v_installed.stdout"
+  when: win10cis_rule_2_2_14
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.14
-      - automated
       - patch
+      - automated
+      - rule_2.2.14
 
 - name: "2.2.15 | PATCH | Ensure Debug programs is set to Administrators."
   ansible.windows.win_user_right:
@@ -221,13 +207,12 @@
       users:
           - Administrators
       action: set
-  when:
-      - win10cis_rule_2_2_15
+  when: win10cis_rule_2_2_15
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.15
-      - automated
       - patch
+      - automated
+      - rule_2.2.15
 
 - name: "2.2.16 | PATCH | Ensure Deny access to this computer from the network to include Guests."
   ansible.windows.win_user_right:
@@ -241,9 +226,9 @@
       - not win_skip_for_test
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.16
-      - automated
       - patch
+      - automated
+      - rule_2.2.16
 
 - name: "2.2.17 | PATCH | Ensure Deny log on as a batch job to include Guests."
   ansible.windows.win_user_right:
@@ -251,13 +236,12 @@
       users:
           - Guests
       action: add
-  when:
-      - win10cis_rule_2_2_17
+  when: win10cis_rule_2_2_17
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.17
-      - automated
       - patch
+      - automated
+      - rule_2.2.17
 
 - name: "2.2.18 | PATCH | Ensure Deny log on as a service to include Guests."
   ansible.windows.win_user_right:
@@ -265,13 +249,12 @@
       users:
           - Guests
       action: add
-  when:
-      - win10cis_rule_2_2_18
+  when: win10cis_rule_2_2_18
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.18
-      - automated
       - patch
+      - automated
+      - rule_2.2.18
 
 - name: "2.2.19 | PATCH | Ensure Deny log on locally to include Guests."
   ansible.windows.win_user_right:
@@ -279,13 +262,12 @@
       users:
           - Guests
       action: add
-  when:
-      - win10cis_rule_2_2_19
+  when: win10cis_rule_2_2_19
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.19
-      - automated
       - patch
+      - automated
+      - rule_2.2.19
 
 - name: "2.2.20 | PATCH | Ensure Deny log on through Remote Desktop Services to include Guests."
   ansible.windows.win_user_right:
@@ -299,9 +281,9 @@
       - not win_skip_for_test
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.20
-      - automated
       - patch
+      - automated
+      - rule_2.2.20
       - userrights
 
 - name: "2.2.21 | PATCH | Ensure Enable computer and user accounts to be trusted for delegation is set to No One."
@@ -309,13 +291,12 @@
       name: SeEnableDelegationPrivilege
       users: []
       action: set
-  when:
-      - win10cis_rule_2_2_21
+  when: win10cis_rule_2_2_21
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.21
-      - automated
       - patch
+      - automated
+      - rule_2.2.21
 
 - name: "2.2.22 | PATCH | Ensure Force shutdown from a remote system is set to Administrators."
   ansible.windows.win_user_right:
@@ -323,13 +304,12 @@
       users:
           - Administrators
       action: set
-  when:
-      - win10cis_rule_2_2_22
+  when: win10cis_rule_2_2_22
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.22
-      - automated
       - patch
+      - automated
+      - rule_2.2.22
       - administrators
 
 - name: "2.2.23 | PATCH | Ensure Generate security audits is set to LOCAL SERVICE, NETWORK SERVICE."
@@ -339,13 +319,12 @@
           - Local Service
           - Network Service
       action: set
-  when:
-      - win10cis_rule_2_2_23
+  when: win10cis_rule_2_2_23
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.23
-      - automated
       - patch
+      - automated
+      - rule_2.2.23
       - services
 
 - name: "2.2.24 | PATCH | Ensure Impersonate a client after authentication is set to Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE, and when the Web Server IIS Role with Web Services Role Service is installed IIS IUSRS."
@@ -354,7 +333,7 @@
         ansible.windows.win_shell: Get-WindowsOptionalFeature -Online -FeatureName IIS-WebServerRole | Select-Object -Property State | ft -hide
         changed_when: false
         failed_when: false
-        register: win10cis_iis_web_server_role_installed
+        register: discovered_2_2_24_iis_web_server_role_installed
 
       - name: "2.2.24 | PATCH | Ensure Impersonate a client after authentication is set to Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE, and when the Web Server IIS Role with Web Services Role Service is installed IIS IUSRS. | Web Server Not Installed."
         ansible.windows.win_user_right:
@@ -365,7 +344,7 @@
                 - Network Service
                 - Service
             action: set
-        when: "'Enabled' not in win10cis_iis_web_server_role_installed.stdout_lines"
+        when: "'Enabled' not in discovered_2_2_24_iis_web_server_role_installed.stdout_lines"
 
       - name: "2.2.24 | PATCH | Ensure Impersonate a client after authentication is set to Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE, and when the Web Server IIS Role with Web Services Role Service is installed IIS IUSRS. | Web Server Installed."
         ansible.windows.win_user_right:
@@ -377,14 +356,13 @@
                 - Network Service
                 - Service
             action: set
-        when: "'Enabled' in win10cis_iis_web_server_role_installed.stdout_lines"
-  when:
-      - win10cis_rule_2_2_24
+        when: "'Enabled' in discovered_2_2_24_iis_web_server_role_installed.stdout_lines"
+  when: win10cis_rule_2_2_24
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.24
-      - automated
       - patch
+      - automated
+      - rule_2.2.24
       - administrators
 
 - name: "2.2.25 | PATCH | Ensure Increase scheduling priority is set to Administrators, Window Manager/Window Manager Group."
@@ -394,13 +372,12 @@
           - Administrators
           - Window Manager\Window Manager Group
       action: set
-  when:
-      - win10cis_rule_2_2_25
+  when: win10cis_rule_2_2_25
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.25
-      - automated
       - patch
+      - automated
+      - rule_2.2.25
       - administrators
 
 - name: "2.2.26 | PATCH | Ensure Load and unload device drivers is set to Administrators."
@@ -409,13 +386,12 @@
       users:
           - Administrators
       action: set
-  when:
-      - win10cis_rule_2_2_26
+  when: win10cis_rule_2_2_26
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.26
-      - automated
       - patch
+      - automated
+      - rule_2.2.26
       - administrators
 
 - name: "2.2.27 | PATCH | Ensure Lock pages in memory is set to No One."
@@ -423,13 +399,12 @@
       name: SeLockMemoryPrivilege
       users: []
       action: set
-  when:
-      - win10cis_rule_2_2_27
+  when: win10cis_rule_2_2_27
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.27
-      - automated
       - patch
+      - automated
+      - rule_2.2.27
       - administrators
 
 - name: "2.2.28 | PATCH | Ensure Log on as a batch job is set to Administrators."
@@ -437,13 +412,12 @@
       name: SeBatchLogonRight
       users: "{{ win10cis_sebatchlogonright }}"
       action: set
-  when:
-      - win10cis_rule_2_2_28
+  when: win10cis_rule_2_2_28
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_2.2.28
-      - automated
       - patch
+      - automated
+      - rule_2.2.28
       - administrators
 
 - name: "2.2.29 | PATCH | Configure Log on as a service."
@@ -451,11 +425,11 @@
       - name: "2.2.29 | PATCH | Configure Log on as a service. | Hyper-V not installed."
         ansible.windows.win_user_right:
             name: SeServiceLogonRight
-            users: "{{ win10cis_sebatchlogonright }}"
+            users: "{{ win10cis_seservicelogonright }}"
             action: set
         when:
-            - "'Enabled' not in win10cis_hyper_v_installed.stdout"
-            - '"" in win10cis_sebatchlogonright'
+            - "'Enabled' not in discovered_hyper_v_installed.stdout"
+            - '"" in win10cis_seservicelogonright'
 
       - name: "2.2.29 | PATCH | Configure Log on as a service. | Hyper-V installed."
         ansible.windows.win_user_right:
@@ -464,23 +438,43 @@
                 - NT VIRTUAL MACHINE\Virtual Machines
             action: set
         when:
-            - "'Enabled' in win10cis_hyper_v_installed.stdout"
-            - '"" in win10cis_sebatchlogonright'
+            - "'Enabled' in discovered_hyper_v_installed.stdout"
+            - '"" in win10cis_seservicelogonright'
+
+      - name: "2.2.29 | PATCH | Configure Log on as a service. | WDAG Enabled ."
+        ansible.windows.win_user_right:
+            name: SeServiceLogonRight
+            users:
+                - WDAGUtilityAccount
+            action: set
+        when:
+            - "'Enabled' in discovered_wdag_enabled.stdout"
+            - '"" in win10cis_seservicelogonright'
+
+      - name: "2.2.29 | PATCH | Configure Log on as a service. | Hyper-V & WDAG Enabled ."
+        ansible.windows.win_user_right:
+            name: SeServiceLogonRight
+            users:
+                - NT VIRTUAL MACHINE\Virtual Machines
+                - WDAGUtilityAccount
+            action: set
+        when:
+            - "'Enabled' in discovered_wdag_enabled.stdout"
+            - "'Enabled' in discovered_hyper_v_installed.stdout"
+            - '"" in win10cis_seservicelogonright'
 
       - name: "2.2.29 | PATCH | Configure Log on as a service. | User Defined Input."
         ansible.windows.win_user_right:
             name: SeServiceLogonRight
-            users: "{{ win10cis_sebatchlogonright }}"
+            users: "{{ win10cis_seservicelogonright }}"
             action: set
-        when:
-            - '"" not in win10cis_sebatchlogonright'
-  when:
-      - win10cis_rule_2_2_29
+        when: '"" not in win10cis_seservicelogonright'
+  when: win10cis_rule_2_2_29
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_2.2.29
-      - automated
       - patch
+      - automated
+      - rule_2.2.29
 
 - name: "2.2.30 | PATCH | Ensure Manage auditing and security log is set to Administrators."
   ansible.windows.win_user_right:
@@ -488,13 +482,12 @@
       users:
           - Administrators
       action: set
-  when:
-      - win10cis_rule_2_2_30
+  when: win10cis_rule_2_2_30
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.30
-      - automated
       - patch
+      - automated
+      - rule_2.2.30
       - administrators
 
 - name: "2.2.31 | PATCH | Ensure Modify an object label is set to No One."
@@ -502,13 +495,12 @@
       name: SeReLabelPrivilege
       users: []
       action: set
-  when:
-      - win10cis_rule_2_2_31
+  when: win10cis_rule_2_2_31
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.31
-      - automated
       - patch
+      - automated
+      - rule_2.2.31
 
 - name: "2.2.32 | PATCH | Ensure Modify firmware environment values is set to Administrators."
   ansible.windows.win_user_right:
@@ -516,13 +508,12 @@
       users:
           - Administrators
       action: set
-  when:
-      - win10cis_rule_2_2_32
+  when: win10cis_rule_2_2_32
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.32
-      - automated
       - patch
+      - automated
+      - rule_2.2.32
       - administrators
 
 - name: "2.2.33 | PATCH | Ensure Perform volume maintenance tasks is set to Administrators."
@@ -531,13 +522,12 @@
       users:
           - Administrators
       action: set
-  when:
-      - win10cis_rule_2_2_33
+  when: win10cis_rule_2_2_33
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.33
-      - automated
       - patch
+      - automated
+      - rule_2.2.33
       - administrators
 
 - name: "2.2.34 | PATCH | Ensure Profile single process is set to Administrators."
@@ -546,13 +536,12 @@
       users:
           - Administrators
       action: set
-  when:
-      - win10cis_rule_2_2_34
+  when: win10cis_rule_2_2_34
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.34
-      - automated
       - patch
+      - automated
+      - rule_2.2.34
       - administrators
 
 - name: "2.2.35 | PATCH | Ensure Profile system performance is set to Administrators, NT SERVICE\\WdiServiceHost."
@@ -562,13 +551,12 @@
           - Administrators
           - NT SERVICE\WdiServiceHost
       action: set
-  when:
-      - win10cis_rule_2_2_35
+  when: win10cis_rule_2_2_35
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.35
-      - automated
       - patch
+      - automated
+      - rule_2.2.35
       - administrators
       - service
 
@@ -579,13 +567,12 @@
           - LOCAL SERVICE
           - NETWORK SERVICE
       action: set
-  when:
-      - win10cis_rule_2_2_36
+  when: win10cis_rule_2_2_36
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.36
-      - automated
       - patch
+      - automated
+      - rule_2.2.36
       - service
 
 - name: "2.2.37 | PATCH | Ensure Restore files and directories is set to Administrators."
@@ -594,13 +581,12 @@
       users:
           - Administrators
       action: set
-  when:
-      - win10cis_rule_2_2_37
+  when: win10cis_rule_2_2_37
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.37
-      - automated
       - patch
+      - automated
+      - rule_2.2.37
       - administrators
 
 - name: "2.2.38 | PATCH | Ensure Shut down the system is set to Administrators, Users."
@@ -610,13 +596,12 @@
           - Administrators
           - Users
       action: set
-  when:
-      - win10cis_rule_2_2_38
+  when: win10cis_rule_2_2_38
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.38
-      - automated
       - patch
+      - automated
+      - rule_2.2.38
       - administrators
 
 - name: "2.2.39 | PATCH | Ensure Take ownership of files or other objects is set to Administrators"
@@ -625,11 +610,10 @@
       users:
           - Administrators
       action: set
-  when:
-      - win10cis_rule_2_2_39
+  when: win10cis_rule_2_2_39
   tags:
       - level1-corporate-enterprise-environment
-      - rule_2.2.39
-      - automated
       - patch
+      - automated
+      - rule_2.2.39
       - administrators
