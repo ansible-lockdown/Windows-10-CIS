@@ -820,7 +820,7 @@ win10cis_consent_prompt_behavior_admin: 2
 
 # The variables below have been added to take into account the option added to CIS to uninstall the services.
 # NOTE: By default the services will be disabled and stopped as per the CIS standard listed first.
-# Not all the services are setup in CIS to be uninstalled and we have documetned them below in single vars.
+# Not all the services are setup in CIS to be uninstalled and we have documented them below in single vars.
 
 # 5.3
 # This Maintains an updated list of computers on the network and supplies this list to computers
@@ -1017,7 +1017,7 @@ win10cis_laps_password_length: 15
 win10cis_laps_password_age: 30
 
 # 18.9.25.7
-# win10cis_laps_post_auth_actions_grace_period is the olicy settings configures post-authentication actions which will be
+# win10cis_laps_post_auth_actions_grace_period is the policy settings configures post-authentication actions which will be
 # executed after detecting an authentication by the Windows LAPS managed account. The Grace period refers to the amount of
 # time (hours) to wait after an authentication before executing the specified post-authentication actions.
 # The recommended state for this setting is: Enabled: 8 or fewer hours, but not 0.
@@ -1046,7 +1046,7 @@ win10cis_laps_post_auth_actions_reset_password: 3
 win10cis_48_digit_recovery_password_setting: 2
 
 # 18.10.9.1.5
-# win10cis_256bit_recovery_key_setting is theThis policy setting allows you to control how BitLocker-protected fixed data drives
+# win10cis_256bit_recovery_key_setting is the policy setting that allows you to control how BitLocker-protected fixed data drives
 # are recovered in the absence of the required credentials. This policy setting is applied when you turn on BitLocker.
 # In "Configure user storage of BitLocker recovery information" select whether users are allowed, required, or not allowed to
 # generate a 48-digit recovery password or a 256-bit recovery key.
