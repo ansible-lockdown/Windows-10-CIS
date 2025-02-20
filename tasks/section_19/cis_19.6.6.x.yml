@@ -6,13 +6,12 @@
       name: NoImplicitFeedback
       data: 1
       type: dword
-  loop: "{{ hku_loaded_list }}"
+  loop: "{{ discovered_hku_loaded_list }}"
   notify: change_requires_reboot
-  when:
-      - win10cis_rule_19_6_6_1_1
+  when: win10cis_rule_19_6_6_1_1
   tags:
       - level2-high-security-sensitive-data-environment
-      - rule_19.6.6.1.1
-      - automated
       - patch
-      - help-experience
+      - automated
+      - rule_19.6.6.1.1
+      - help_experience
