@@ -1,5 +1,19 @@
 # Changelog
 
+## Release 1.0.1
+
+#### Feburary 2025
+General Updates
+  - Updated Prelim To Add Always Tags To All Tasks
+  - Control 2.3.7.5 & 2.3.7.6 Fixed
+  - Control 5.3 Updated Name
+  - Control 18.10.65.5 Fixed Name From DisableOSUpgrade to RemoveWindowsStore - Thanks @mfortin
+
+Issues Addressed:
+  - [#16](https://github.com/ansible-lockdown/Windows-10-CIS/issues/16) - Thanks @davidstanaway
+  - [#15](https://github.com/ansible-lockdown/Windows-10-CIS/issues/15) - Thanks @dwierima-aspentech
+  - [#14](https://github.com/ansible-lockdown/Windows-10-CIS/issues/14) - Thanks @dwierima-aspentech
+
 ## Release 1.0.0
 
 #### Janurary 2025
