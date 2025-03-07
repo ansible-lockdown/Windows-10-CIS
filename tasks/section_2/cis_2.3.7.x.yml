@@ -115,7 +115,7 @@
       data: "{{ win10cis_legal_notice_caption }}"
       type: string
   when:
-      - win10cis_rule_2_3_7_5
+      - win10cis_rule_2_3_7_6
   tags:
       - level1-corporate-enterprise-environment
       - patch

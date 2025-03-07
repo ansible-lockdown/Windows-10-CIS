@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 1.0.2
+General Updates
+  - Fixed 18.9.5.2 Variable and registry name
+  - Fixed 2.3.7.6 when statement
+
 ## Release 1.0.1
 
 #### Feburary 2025
