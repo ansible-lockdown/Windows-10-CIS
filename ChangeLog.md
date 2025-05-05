@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 1.0.3
+General Updates
+  - Removed 9.3.4 Win_Skip Tag
+  - Updated Default Main win_skip_for_test 9.3.5 to 9.3.4 - Thanks @mikeeq
+
 ## Release 1.0.2
 General Updates
   - Fixed 18.9.5.2 Variable and registry name
@@ -7,7 +12,7 @@ General Updates
 
 ## Release 1.0.1
 
-#### Feburary 2025
+#### February 2025
 General Updates
   - Updated Prelim To Add Always Tags To All Tasks
   - Control 2.3.7.5 & 2.3.7.6 Fixed
@@ -21,10 +26,10 @@ Issues Addressed:
 
 ## Release 1.0.0
 
-#### Janurary 2025
+#### January 2025
 General Updates
 - Updated to CIS Release 3.0.0
-- Updated Titles for Prelim / Main / Post tasks to include the lableing.
+- Updated Titles for Prelim / Main / Post tasks to include the labeling.
 - Tags: All tags contain underscores except for Level-Tags (use dashes). (Need to finish)
 - Enhanced/Reordered Tags
 - Section 5 has had a variety of new variables added (Please Review)
