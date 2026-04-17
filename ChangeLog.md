@@ -1,5 +1,17 @@
 # Changelog
 
+## Release 1.1.0
+
+#### April 2026
+General Updates
+  - Updated registry issues
+  - Updated the cloud check with new variable
+  - Github Actions Version update 
+  - Pr Message Added
+
+Issues Addressed:
+  - [#30](https://github.com/ansible-lockdown/Windows-11-CIS/pull/30) - Thanks @exu-g
+
 ## Release 1.0.3
 General Updates
   - Removed 9.3.4 Win_Skip Tag
